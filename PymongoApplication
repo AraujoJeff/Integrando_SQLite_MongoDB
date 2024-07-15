@@ -1,0 +1,41 @@
+import pymongo 
+
+# Conectar ao servidor MongoDB 
+client = MongoClient('mongodb://localhost:27058/')
+
+# Selecionar o banco de dados (cria o banco se ele não existir)
+db = client.meu_banco_de_dados
+
+# Selecionar a coleção (cria a coleção se ela não existir)
+colecao = db.minha_colecao
+
+# Inserir um documento na coleção
+documento = {
+    "nome": "João",
+    "idade": 30,
+    "cidade": "São Paulo"
+}
+resultado_insercao = colecao.insert_one(documento)
+print(f"Documento inserido com o ID: {resultado_insercao.inserted_id}")
+
+# Inserir múltiplos documentos
+documentos = [
+    {"nome": "Maria", "idade": 25, "cidade": "Rio de Janeiro"},
+    {"nome": "Pedro", "idade": 35, "cidade": "Belo Horizonte"},
+    {"nome": "Ana", "idade": 28, "cidade": "Porto Alegre"}
+]
+resultado_insercao_multiplos = colecao.insert_many(documentos)
+print(f"Documentos inseridos com os IDs: {resultado_insercao_multiplos.inserted_ids}")
+
+# Consultar um documento na coleção
+documento_encontrado = colecao.find_one({"nome": "João"})
+print("Documento encontrado:", documento_encontrado)
+
+# Consultar todos os documentos na coleção
+todos_documentos = colecao.find()
+print("Todos os documentos na coleção:")
+for doc in todos_documentos:
+    print(doc)
+
+# Fechar a conexão com o MongoDB
+client.close()
